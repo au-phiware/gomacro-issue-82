@@ -1,0 +1,22 @@
+:package "gen"
+
+:import (
+	"fmt"
+	"go/ast"
+	"go/token"
+	"strings"
+
+	"github.com/golang/protobuf/descriptor"
+	proto "github.com/au-phiware/gomacro-issue-82"
+)
+
+:macro make() ast.Node {
+	fd, _ := descriptor.ForMessage(proto.Person)
+	expr := ~"{ "Value" }
+	expr.(*ast.BasicLit).Value = fmt.Sprintf(`"%s"`, fd.Name)
+	return ~"{ ~,expr }
+}
+
+func Gen() string {
+	return make
+}
